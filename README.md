@@ -12,7 +12,22 @@ Project objective: create a 12 month forecast with random head count data that i
 
 ---------------------------------------------------------------------------------
 
-# set up the computing environement in Pycharm and then
+## The roadmap for this demo is below
+- set up the computing environement in Pycharm
+- read in the source data file
+- prepare the source data for processing
+- set up the time series generators
+- build the model
+- evaluate the model losses
+- create a forecast training loop
+- backtest the predictions 
+
+---------------------------------------------------------------------------------
+
+# set up the computing environement in Pycharm
+
+The first thing to do is to set up the computing environment in the Pycharm IDE. This set up will set up the code to process properly according to my standards. I make use of setting the random seed number for certain key libraries like TensorFlow and Numpy. Also specific key functions from the Keras library are imported and these will be used in almost all aspects of this demo.
+
 ```
 #set the random seed
 import random as random
@@ -54,7 +69,11 @@ from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 ```
 
+-------------------------------------------------------------------------------------------
+
 # read in the source data file
+
+The first operation step in this process is to read in this the source data from Excel and put it into a Pandas data frame. Then the data in the data frame is validated against the source data to make sure that it matches. 
 
 ```
 ###~~~
@@ -76,14 +95,15 @@ The input file info details are below. Valdiate them against the input source da
 <img width="241" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/cf610024-fff7-4a1a-b546-4e225aa12c33">
 
 
-Next, produce a line plot to see the landscape of the data set:
+Next, produce a line plot to see the landscape of the data set. This plot gives a high level view of the overall direction and any themes that are obvious in the source data. This is a key step and it will inform other aspects of the coding.
+
 ![line_plot](https://github.com/garth-c/python_forecasting/assets/138831938/eb4d5701-5dca-4138-8ba0-a121a58db475)
 
 ------------------------------------------------------------------------------------------------------------------------
 
 # prepare the source data for processing
 
-Next the source data in the Pandas data frame need to be prepared for consumption by the model. This includes splitting the source data into training and testing sets in time series order as well as scaling the source data to normalize the inputs. The test set will consist of the last 24 months of data in this series and the train set will consist of all of the prior data in the series. 
+Next the source data in the Pandas data frame need to be prepared for consumption by the model. This includes splitting the source data into training and testing sets in time series order as well as scaling the source data to normalize the inputs. The test set will consist of the last 24 months of data in this series and the train set will consist of all of the prior data in the series. With time series data, preserving the ordering of the data is vitally important to getting valid forecast values. In a non time series model, the assignment of data between training and testing would be random since order would not matter for those models. 
 
 ```
 ###~~~
@@ -95,7 +115,7 @@ Next the source data in the Pandas data frame need to be prepared for consumptio
 #since it's time series we should do it by date.
 
 #set indexing for train test split
-test_size = 24
+test_size = 24 #use 24 months as the test size cut off
 test_ind = len(headcounts) - test_size
 
 #train test split
@@ -103,14 +123,13 @@ train = headcounts.iloc[:test_ind]
 test = headcounts.iloc[test_ind:]
 
 #LSTM's in Keras require a 3D tensor with shape
-#number of samples, time steps, number of predictor features as an input
-#Samples. One sequence is one sample. A batch is composed of one or more samples.
-#Time Steps. One time step is one point of observation in the sample.
-#Features. One feature is one observation at a time step.
+#1)number of samples
+#2)time steps
+#3)number of predictor features
 
-#scale the data
-#import the scaler function
-from sklearn.preprocessing import MinMaxScaler
+#Samples -> One sequence is one sample. A batch is composed of one or more samples
+#Time Steps -> One time step is one point of observation in the sample
+#Features -> One feature is one observation at a time step
 
 #instantiate the scaler function
 scaler = MinMaxScaler()
@@ -262,7 +281,7 @@ The early stopping criteria stopped the processing after 11 epochs
 
 # evaluate the model losses
 
-The next step is to evaluate the model losses
+The next step is to evaluate the model losses. The model losses per epoch processed are fed back into the model and then it makes course corrections based on the optimizer to adjust the weights of the neurons for the next epoch. Over the course of the processing, the model 'learns' the weights to use to get the best outcome for the forecast.
 
 ```
 #eval the losses
@@ -278,9 +297,9 @@ A plot of the losses is below. As can be seen from this plot, the loss metric si
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-# create a training loop for the forecast
+# create a forecast training loop
 
-The next step is to create a training loop process to forecast one time unit ahead (month, t + 1) and then feed that new value back into the model for the next forecast time unit ahead (month,  t + 2). 
+The next step is to create a training loop process to forecast one time unit ahead (month, t + 1) and then feed that new value back into the model for the next forecast time unit ahead (month,  t + 2). This lop will process for the entire test set length which is 24 months in this case. 
 
 ```
 ###~~~
@@ -329,7 +348,7 @@ The output of the training loop from within the console is shown below.
 
 <img width="249" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/9f226422-c388-45f0-94b4-e51a9fac0c91">
 
-After running the training loop the forecast output is put into a Pandas data frame. These are all scaled values so to get the output converted back into the proper units for the source data and the objective of the project (head counts), the inverse transform function will be applied to the training output loop. The output of the inverse scaling is shown below. 
+After running the training loop the forecast output is put into a new Pandas data frame. These are all scaled values so to get the output converted back into the proper units for the source data and the objective of the project (head counts), the inverse transform function will be applied to the training output loop. The output of the inverse scaling is shown below. These values contain decimals and since this is a headcount project, the forecast values will ultimately need to be rounded to an integer as we can't have partial heads in a headcount forecast. 
 
 <img width="85" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/db7389a2-d55d-43e7-a11a-d78677eb4a8e">
 
@@ -340,7 +359,7 @@ The end result of this transformation back into head counts and the comparison t
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-# backtest the predictions against the actual source data values. 
+# backtest the predictions 
 
 Since this was random source data, the pattern value was negligible. So looking at the model output compared the actual values for the same time period is the backtesting. Looking at the random pattern of the actual data (blue line) and comparing it to the model output (red line), it is clear that the model could use more training to better capture the source data pattern. This could be adding more neurons, relaxing the early stopping parameters, using a different accuracy metric, using different otpimizer inputs, more epochs, etc. There are other transformations that could also be applied in addition to adding other predictor inputs which would make this a multivariate model. Either way, there are a lot of levers and knobs that could be used to tune the model and get better results. 
 
