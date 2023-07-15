@@ -271,7 +271,7 @@ losses.plot(figsize = (10, 8))
 plt.show(block = True)
 ```
 
-A plot of the losses is below. As can be seen from this plot, the loss metric significantly flattens out after 4 epoch and the val loss metric is still climbing. This indicates....
+A plot of the losses is below. As can be seen from this plot, the loss metric significantly flattens out after 4 epoch and the validation loss metric is still climbing. This indicates the model may be overfitting or the model could use more tuning. 
 
 ![model_losses](https://github.com/garth-c/python_forecasting/assets/138831938/c214496e-217b-440c-9eae-d56c006fb1db)
 
