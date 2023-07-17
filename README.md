@@ -10,6 +10,8 @@ Project objective: create a 12 month forecast with random head count data that i
 - mode head count = 1,491
 - standard deviation head count = 391.13
 
+------------------------------------------------------------------------------------------
+
 ### Go back to my profile page
 [garth-c profile page] (https://github.com/garth-c)
 
@@ -401,6 +403,8 @@ The last things to do are to calcualte the mean squared error (MSE) metric to us
 The last bit of this code saves the model locally using the .h5 file format but there are other methods such as pickle that could also be used. 
 
 Thanks for reading!
+
+-----------------------------------------------------------------------------------
 
 ### Go back to my profile page
 [garth-c profile page] (https://github.com/garth-c)
