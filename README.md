@@ -1,6 +1,6 @@
 # Python forecasting demo
 
-Project objective: create a 12 month forecast with random head count data that included ~23 years (282 months) of monthly history. Take the 12 month forecast and then back test it against the actual last 12 months of history to evaulate the accuracy. The specific methods used include a bidirectional LSTM model. For the bidirectional model, use TensorFlow as the back end tensor infrastructure. Also, this demo will use a time series generator to ingest the source data into batches and then feed it to the TensorFlow model for processing.
+Project objective: create a 12 month forecast with random head count data that included ~23 years (282 months) of monthly history. Take the 12 month forecast and then back test it against the actual last 12 months of history to evaulate the accuracy. The specific method used include a bidirectional LSTM model. For the bidirectional model, use TensorFlow as the back end tensor infrastructure. Also, this demo will use a time series generator to ingest the source data into batches and then feed it to the TensorFlow model for processing.
 
 ## data description
 - 282 months of random numbers representing head count for a fictional company
@@ -25,6 +25,10 @@ Project objective: create a 12 month forecast with random head count data that i
 ---------------------------------------------------------------------------------
 
 # set up the computing environement in Pycharm
+
+This is a quick and simple snippet of my Python session info:
+
+<img width="439" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/8d422963-9d91-472e-83f0-b3c109540fc3">
 
 The first thing to do is to set up the computing environment in the Pycharm IDE. This set up will set up the code to process properly according to my standards. I make use of setting the random seed number for certain key libraries like TensorFlow and Numpy. Also specific key functions from the Keras library are imported and these will be used in almost all aspects of this demo.
 
@@ -73,7 +77,7 @@ import matplotlib.pyplot as plt
 
 # read in the source data file
 
-The first operation step in this process is to read in this the source data from Excel and put it into a Pandas data frame. Then the data in the data frame is validated against the source data to make sure that it matches. 
+The first step in this process is to read in this the source data from Excel and put it into a Pandas data frame. Then the data in the data frame is validated against the source data to make sure that it matches. 
 
 ```
 ###~~~
@@ -95,7 +99,7 @@ The input file info details are below. Valdiate them against the input source da
 <img width="241" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/cf610024-fff7-4a1a-b546-4e225aa12c33">
 
 
-Next, produce a line plot to see the landscape of the data set. This plot gives a high level view of the overall direction and any themes that are obvious in the source data. This is a key step and it will inform other aspects of the coding.
+Next, produce a line plot to see the landscape of the data set. This plot gives a high level view of the overall data direction and any themes that are obvious in the source data. This is a key step and it will inform other aspects of the coding.
 
 ![line_plot](https://github.com/garth-c/python_forecasting/assets/138831938/eb4d5701-5dca-4138-8ba0-a121a58db475)
 
@@ -207,7 +211,7 @@ The next step is to configure a bidirectional model. Multiple decisions have to 
 
 Since this is a bidirectional model, the data is processed forward and then backward to learn the pattern by the neurons. Both directions are noted in the model layers shown below in the code. The last layer of this model is a dense layer with an output of 1 which is the end result of the processing. In addition, an optimizer needs to be configured and included in the model set up process. 
 
-The next few steps are to compile the model and then double check the model configuration  with the summary command. The last few steps are to configure an early stopping criteria based on val loss and then to set up the maximum number of model iterations with an epoch variable. The the final step to fit the data to the model. This is accomplished using the time series generators set up above. 
+The next few steps are to compile the model and then double check the model configuration  with the summary command. The last few steps are to configure an early stopping criteria based on validation loss and then to set up the maximum number of model iterations with an epoch variable. Then the final step to fit the data to the model. This is accomplished using the time series generators set up above. 
 
 Once the fit command is executed, the model will process the source data using all of the parameters set up above. 
 
@@ -290,7 +294,7 @@ losses.plot(figsize = (10, 8))
 plt.show(block = True)
 ```
 
-A plot of the losses is below. As can be seen from this plot, the loss metric significantly flattens out after 4 epoch and the validation loss metric is still climbing. This indicates the model may be overfitting or the model could use more tuning. 
+A plot of the losses is below. As can be seen from this plot, the loss metric significantly flattens out after 4 epoch and the validation loss metric is still climbing. This indicates the model may be overfitting and/or the model could use more tuning. 
 
 ![model_losses](https://github.com/garth-c/python_forecasting/assets/138831938/c214496e-217b-440c-9eae-d56c006fb1db)
 
