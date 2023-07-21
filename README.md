@@ -216,6 +216,12 @@ The next step is to configure a bidirectional model. Multiple decisions have to 
 
 Since this is a bidirectional model, the data is processed forward and then backward to learn the pattern by the neurons. Both directions are noted in the model layers shown below in the code. The last layer of this model is a dense layer with an output of 1 which is the end result of the processing. In addition, an optimizer needs to be configured and included in the model set up process. 
 
+A depiction of a bidirectional LSTM model used for time series data is shown below.
+![image](https://github.com/garth-c/python_forecasting/assets/138831938/adfd604a-6031-4314-ba21-13746a7ac4a1)
+
+
+The number of neurons that I set up in my model is the input layer and my final dense layer is my output which represents the forecast. 
+
 The next few steps are to compile the model and then double check the model configuration  with the summary command. The last few steps are to configure an early stopping criteria based on validation loss and then to set up the maximum number of model iterations with an epoch variable. Then the final step to fit the data to the model. This is accomplished using the time series generators set up above. 
 
 Once the fit command is executed, the model will process the source data using all of the parameters set up above. 
