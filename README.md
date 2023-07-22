@@ -1,6 +1,9 @@
 # Python forecasting demo
 
-Project objective: create a 12 month forecast with random head count data that included ~23 years (282 months) of monthly history. Take the 12 month forecast and then back test it against the actual last 12 months of history to evaulate the accuracy. The specific method used include a bidirectional LSTM model. For the bidirectional model, use TensorFlow as the back end tensor infrastructure. Also, this demo will use a time series generator to ingest the source data into batches and then feed it to the TensorFlow model for processing.
+Project objective: 
+In this project, I am working in the domain of time series forecasting using a bidirectional modeling approach. Using Python and TensorFlow, I will build an accurate bidirectional forecasting model. The primary focus is on predicting future values in a time series sequence based on historical data. By implementing a bidirectional architecture, I enable the model to capture not only past information but also future context, enhancing its predictive capabilities. 
+
+Specifically, I want to create a 12 month forecast with random head count data that included ~23 years (282 months) of monthly history. Take the 12 month forecast and then back test it against the actual last 12 months of history to evaulate the accuracy. The specific method used include a bidirectional LSTM model. For the bidirectional model, use TensorFlow as the back end tensor infrastructure. Also, this demo will use a time series generator to ingest the source data into batches and then feed it to the TensorFlow model for processing.
 
 ## data description
 - 282 months of random numbers representing head count for a fictional company
