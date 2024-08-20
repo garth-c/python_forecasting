@@ -7,8 +7,9 @@ Business objective:
 Develop a robust and accurate top-down headcount forecasting model, enabling data-driven decision-making for strategic workforce planning.
 
 Project specifics and high level approach: 
-- create a 12 month headcount forecast that consists of ~23 years (282 months) of random monthly headcount history
-- back test forecast against the actual last 12 months of history to evaulate the accuracy of the forecast
+- create a 24 month headcount forecast
+- source data consists of ~23 years (282 months) of random monthly headcount history
+- back test forecast against the actual last 24 months of history to evaulate the accuracy of the forecast
 - demo the use of a bidirectional LSTM model
 - demo will use a time series generator
 
