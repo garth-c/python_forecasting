@@ -1,9 +1,16 @@
 # Python forecasting demo
 
 Project objective: 
-In this project, I am working in the domain of time series forecasting using a bidirectional modeling approach. Using Python and TensorFlow, I will build an accurate bidirectional forecasting model. The primary focus is on predicting future values in a time series sequence based on historical data. By implementing a bidirectional architecture, I enable the model to capture not only past information but also future context, enhancing its predictive capabilities. 
+In this demo project, I am working in the domain of time series forecasting using a bidirectional modeling approach. Using Python with TensorFlow, I will build an accurate bidirectional headcount forecasting model. The primary focus is on predicting future values in a time series sequence based on historical headcount data. By implementing a bidirectional architecture approach, I will enable the model to capture not only past information but also future context, thus enhancing its predictive capabilities. 
 
-Specifically, I want to create a 12 month forecast with random head count data that included ~23 years (282 months) of monthly history. Take the 12 month forecast and then back test it against the actual last 12 months of history to evaulate the accuracy. The specific method used include a bidirectional LSTM model. For the bidirectional model, use TensorFlow as the back end tensor infrastructure. Also, this demo will use a time series generator to ingest the source data into batches and then feed it to the TensorFlow model for processing.
+Business objective:
+Develop a robust and accurate top-down headcount forecasting model, enabling data-driven decision-making for strategic workforce planning.
+
+Project specifics and high level approach: 
+- create a 12 month headcount forecast that consists of ~23 years (282 months) of random monthly headcount history
+- back test forecast against the actual last 12 months of history to evaulate the accuracy of the forecast
+- demo the use of a bidirectional LSTM model
+- demo will use a time series generator
 
 ## data description
 - 282 months of random numbers representing head count for a fictional company
@@ -20,7 +27,7 @@ Specifically, I want to create a 12 month forecast with random head count data t
 
 ---------------------------------------------------------------------------------
 
-## The roadmap for this demo is below
+## The process roadmap for this demo is below
 - set up the computing environement in Pycharm
 - read in the source data file
 - prepare the source data for processing
@@ -28,7 +35,8 @@ Specifically, I want to create a 12 month forecast with random head count data t
 - build the model
 - evaluate the model losses
 - create a forecast training loop
-- backtest the predictions 
+- backtest the predictions
+- present the forecasted head counts by month 
 
 ---------------------------------------------------------------------------------
 
@@ -85,7 +93,7 @@ import matplotlib.pyplot as plt
 
 # read in the source data file
 
-The first step in this process is to read in this the source data from Excel and put it into a Pandas data frame. Then the data in the data frame is validated against the source data to make sure that it matches. 
+The first step in the data process is to read in this the source data from Excel and put it into a Pandas data frame. Then the data in the data frame is validated against the source data to make sure that it matches i.e. basic data quality validation step. 
 
 ```
 ###~~~
@@ -107,7 +115,7 @@ The input file info details are below. Valdiate them against the input source da
 <img width="241" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/cf610024-fff7-4a1a-b546-4e225aa12c33">
 
 
-Next, produce a line plot to see the landscape of the data set. This plot gives a high level view of the overall data direction and any themes that are obvious in the source data. This is a key step and it will inform other aspects of the coding.
+Next, produce a line plot to see the landscape of the data set. This plot gives a high level view of the overall data direction and any themes that are obvious in the source data. This is a key exploratory step to perform and it will inform other aspects of the coding.
 
 ![line_plot](https://github.com/garth-c/python_forecasting/assets/138831938/eb4d5701-5dca-4138-8ba0-a121a58db475)
 
@@ -157,9 +165,9 @@ scaled_test = scaler.transform(test)
 
 # set up the time series generators
 
-The time series generators for training and validation ingest the source data set and then carve it up into batches. From there the generators push each batch into model for processing. These generators are an invaluable way to process source data and feed it to a time series model in a controlled way. Some of the inputs to the time series generators are the number of inputs variable which is the number of data points needed to capture the time pattern of the data. This setting needs domain knowledge to properly set in a real world problem. For this demo, 24 months was selected to keep things simple. The other key input if the number of units that represents a single unit of time in the source data. Since this is a series based on months, the batch size selected is 1. If there were multiple observations for a single month, and the goal was a monthly forecast, then this value would need to be adjusted accordingly. 
+The time series generators for training and validation ingest the source data set and then carve it up into batches. From there the generators push each batch into model for processing. These generators are an invaluable way to process source data and feed it to a time series model in a controlled approach. Some of the inputs to the time series generators are the number of inputs variable which is the number of data points needed to capture the time pattern of the data. This setting needs domain knowledge to properly set in a real world problem. For this demo, 24 months was selected to keep things simple. The other key input is the number of units that represents a single unit of time in the source data. Since this is a series based on months, the batch size selected is 1. If there were multiple observations for a single month, and the goal was a monthly forecast, then this value would need to be adjusted accordingly. 
 
-The last part of the time series generator set up is to test the generator output. The training generator should generate a tensor equal to the number of inputs variable from above. The validation generator should generate one less than the training generator. 
+The last part of the time series generator set up is to test the generator output. The training generator should generate a tensor equal to the number of inputs variable as documented from above. Also, the validation generator should generate one less than the training generator. 
 
 ```
 ###~~~
@@ -215,7 +223,8 @@ This screen shot shows 23 at the bottom which is the correct value for the valid
 
 # build the model
 
-The next step is to configure a bidirectional model. Multiple decisions have to be made around the proper configuration of the model. Since this is a univariate model (only one predictor input), then the number of features is one. But if this was a multivariate model then this number would flex with the count of predictor variables that are being fed into the model. Another key input to the model is then number of neurons to use. The larger the count the longer the training time which usually leads to an overfit model. 
+The next step is to configure a bidirectional model: 
+Multiple decisions have to be made around the proper configuration of the model. Since this is a univariate model (only one predictor input), then the number of features is one. But if this was a multivariate model then this number would flex with the count of predictor variables that are being fed into the model. Another key input to the model is then number of neurons to use. The larger the count the longer the training time which usually leads to an overfit model. Overfitting a model will be degrade the quality of the output over time when the source data changes.   
 
 Since this is a bidirectional model, the data is processed forward and then backward to learn the pattern by the neurons. Both directions are noted in the model layers shown below in the code. The last layer of this model is a dense layer with an output of 1 which is the end result of the processing. In addition, an optimizer needs to be configured and included in the model set up process. 
 
@@ -299,7 +308,8 @@ The early stopping criteria stopped the processing after 11 epochs
 
 # evaluate the model losses
 
-The next step is to evaluate the model losses. The model losses per epoch processed are fed back into the model and then it makes course corrections based on the optimizer to adjust the weights of the neurons for the next epoch. Over the course of the processing, the model 'learns' the weights to use to get the best outcome for the forecast.
+The next step is to evaluate the model losses: 
+The model losses per epoch processed are fed back into the model and then it makes course corrections based on the optimizer to adjust the weights of the neurons for the next epoch. Over the course of the processing, the model 'learns' the weights to use to get the best outcome for the forecast.
 
 ```
 #eval the losses
@@ -317,7 +327,7 @@ A plot of the losses is below. As can be seen from this plot, the loss metric si
 
 # create a forecast training loop
 
-The next step is to create a training loop process to forecast one time unit ahead (month, t + 1) and then feed that new value back into the model for the next forecast time unit ahead (month,  t + 2). This lop will process for the entire test set length which is 24 months in this case. 
+The next step is to create a training loop process to forecast one time unit ahead (month, time + 1) and then feed that new value back into the model for the next forecast time unit ahead (month,  time + 2). This loop will process for the entire test set length which is 24 months in this case. 
 
 ```
 ###~~~
@@ -366,7 +376,7 @@ The output of the training loop from within the console is shown below.
 
 <img width="249" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/9f226422-c388-45f0-94b4-e51a9fac0c91">
 
-After running the training loop the forecast output is put into a new Pandas data frame. These are all scaled values so to get the output converted back into the proper units for the source data and the objective of the project (head counts), the inverse transform function will be applied to the training output loop. The output of the inverse scaling is shown below. These values contain decimals and since this is a headcount project, the forecast values will ultimately need to be rounded to an integer as we can't have partial heads in a headcount forecast. 
+After running the training loop the forecast output is put into a new Pandas data frame. These are all scaled values so to get the output converted back into the proper units (headcount) for the source data and the objective of the project (head counts), the inverse transform function will be applied to the training output loop. The output of the inverse scaling is shown below. These values contain decimals and since this is a headcount project, the forecast values will ultimately need to be rounded to an integer as we can't have partial heads in a headcount forecast. 
 
 <img width="85" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/db7389a2-d55d-43e7-a11a-d78677eb4a8e">
 
@@ -404,7 +414,7 @@ from keras.models import load_model
 model_LTSM_bd.save('model_LTSM_bd.h5')
 ```
 
-The last things to do are to calcualte the mean squared error (MSE) metric to use for comparing against other models and the finally saving the model to reconstitute at a later date if needed. The MSE metric is 399.17 and it is shown below. 
+The last things to do are to calcualte the mean squared error (MSE) metric to use for comparing against other models and the finally saving the model to reconstitute at a later date if needed. The MSE metric is 399.17 and it is shown below. This would be used as a comparative metric against other models or versions of this model.  
 
 <img width="269" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/81e9b083-328f-4239-9496-f56b9d340ac1">
 
