@@ -52,7 +52,7 @@ graph TD;
 ```
 ---------------------------------------------------------------------------------
 
-# set up the computing environment in Pycharm
+# set up the computing environment in the Python IDE
 
 This is a quick and simple snippet of my Python session info:
 
@@ -243,7 +243,14 @@ Since this is a bidirectional model, the data is processed forward and then back
 A depiction of a bidirectional LSTM model used for time series data is shown below.
 <img width="850" height="397" alt="bidirectional_ltsm" src="https://github.com/user-attachments/assets/5bd17a11-6075-489c-b02d-83ea5ba10969" />
 
+### Mathematical Architecture: Bidirectional LSTM
+Unlike a standard LSTM that only processes sequences in chronological order, the **Bidirectional LSTM** used in this project processes the headcount data in both forward and backward directions. This allows the model to capture dependencies from both past and future time steps.
 
+The final hidden state ($h_t$) at any given time step $t$ is the concatenation of the forward ($\overrightarrow{h_t}$) and backward ($\overleftarrow{h_t}$) hidden states:
+
+$$h_t = [\overrightarrow{h_t} \, \Vert \, \overleftarrow{h_t}]$$
+
+This enables the model to resolve patterns in workforce shifts that may be influenced by cyclic or seasonal trends occurring later in the fiscal year.
 The number of neurons that I set up in my model is the input layer and my final dense layer is my output which represents the forecast. 
 
 The next few steps are to compile the model and then double check the model configuration  with the summary command. The last few steps are to configure an early stopping criteria based on validation loss and then to set up the maximum number of model iterations with an epoch variable. Then the final step to fit the data to the model. This is accomplished using the time series generators set up above. 
@@ -251,6 +258,7 @@ The next few steps are to compile the model and then double check the model conf
 Once the fit command is executed, the model will process the source data using all of the parameters set up above. 
 
 ```
+
 ###~~~
 #build the model
 ###~~~
@@ -426,10 +434,16 @@ from keras.models import load_model
 model_LTSM_bd.save('model_LTSM_bd.h5')
 ```
 
-The last things to do are to calcualte the mean squared error (MSE) metric to use for comparing against other models and the finally saving the model to reconstitute at a later date if needed. The MSE metric is 399.17 and it is shown below. This would be used as a comparative metric against other models or versions of this model.  
+### Model Evaluation Metric
+To evaluate the accuracy of the 24-month backtest, I utilized **Mean Absolute Percentage Error (MAPE)**. In a financial headcount context, MAPE is the preferred metric as it provides a relative measure of forecast error that is easily interpretable by stakeholders:
+
+$$\text{MAPE} = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{y_t - \hat{y}_t}{y_t} \right|$$
+
+Where $y_t$ is the actual headcount and $\hat{y}_t$ is the forecasted value.
+
+The last things to do are to calculate the mean squared error (MSE) metric to use for comparing against other models and the finally saving the model to reconstitute at a later date if needed. The MSE metric is 399.17 and it is shown below. This would be used as a comparative metric against other models or versions of this model.  
 
 <img width="269" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/81e9b083-328f-4239-9496-f56b9d340ac1">
-
 
 The last bit of this code saves the model locally using the .h5 file format but there are other methods such as pickle that could also be used. 
 
