@@ -8,8 +8,8 @@ Develop a robust and accurate top-down headcount forecasting model, enabling dat
 
 Project specifics and high level approach: 
 - create a 24 month headcount forecast
-- source data consists of ~23 years (282 months) of random monthly headcount history
-- back test forecast against the actual last 24 months of history to evaulate the accuracy of the forecast
+- source data consists of ~23 years (282 months) of simulated monthly headcount history
+- back test forecast against the actual last 24 months of history to evaluate the accuracy of the forecast
 - demo the use of a bidirectional LSTM model
 - demo will use a time series generator
 
@@ -17,7 +17,7 @@ Project specifics and high level approach:
 - 282 months of random numbers representing head count for a fictional company
 - start month is January 2000 and the ending month is June 2023
 - mean head count = 773.7
-- meadian head count = 774.5
+- median head count = 774.5
 - mode head count = 1,491
 - standard deviation head count = 391.13
 
@@ -29,7 +29,7 @@ Project specifics and high level approach:
 ---------------------------------------------------------------------------------
 
 ## The process roadmap for this demo is below
-- set up the computing environement in Pycharm
+- set up the computing environment in a Python IDE
 - read in the source data file
 - prepare the source data for processing
 - set up the time series generators
@@ -52,13 +52,13 @@ graph TD;
 ```
 ---------------------------------------------------------------------------------
 
-# set up the computing environement in Pycharm
+# set up the computing environment in Pycharm
 
 This is a quick and simple snippet of my Python session info:
 
 <img width="439" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/8d422963-9d91-472e-83f0-b3c109540fc3">
 
-The first thing to do is to set up the computing environment in the Pycharm IDE. This set up will set up the code to process properly according to my standards. I make use of setting the random seed number for certain key libraries like TensorFlow and Numpy. Also specific key functions from the Keras library are imported and these will be used in almost all aspects of this demo.
+The first thing to do is to set up the computing environment in the Python IDE. This set up will set up the code to process properly according to my standards. I make use of setting the random seed number for certain key libraries like TensorFlow and Numpy. Also specific key functions from the Keras library are imported and these will be used in almost all aspects of this demo.
 
 ```
 #set the random seed
@@ -122,7 +122,7 @@ headcounts = pd.read_excel('head_counts.xlsx',
 headcounts.info()
 ```
 
-The input file info details are below. Valdiate them against the input source data file.
+The input file info details are below. Validate them against the input source data file.
 
 <img width="241" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/cf610024-fff7-4a1a-b546-4e225aa12c33">
 
