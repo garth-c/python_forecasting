@@ -39,6 +39,17 @@ Project specifics and high level approach:
 - backtest the predictions
 - present the forecasted head counts by month 
 
+```mermaid
+graph TD;
+    A[Set up the computing environment in Python IDE] --> B[Read in the source data file];
+    B --> C[Prepare the source data for processing];
+    C --> D[Set up the time series generators];
+    D --> E[Build the model];
+    E --> F[Evaluate the model losses];
+    F --> G[Create a forecast training loop];
+    G --> H[Backtest the predictions];
+    H --> I[Present the forecasted head counts by month];
+```
 ---------------------------------------------------------------------------------
 
 # set up the computing environement in Pycharm
@@ -230,7 +241,7 @@ Multiple decisions have to be made around the proper configuration of the model.
 Since this is a bidirectional model, the data is processed forward and then backward to learn the pattern by the neurons. Both directions are noted in the model layers shown below in the code. The last layer of this model is a dense layer with an output of 1 which is the end result of the processing. In addition, an optimizer needs to be configured and included in the model set up process. 
 
 A depiction of a bidirectional LSTM model used for time series data is shown below.
-![image](https://github.com/garth-c/python_forecasting/assets/138831938/adfd604a-6031-4314-ba21-13746a7ac4a1)
+<img width="850" height="397" alt="bidirectional_ltsm" src="https://github.com/user-attachments/assets/5bd17a11-6075-489c-b02d-83ea5ba10969" />
 
 
 The number of neurons that I set up in my model is the input layer and my final dense layer is my output which represents the forecast. 
