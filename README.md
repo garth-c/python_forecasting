@@ -14,7 +14,7 @@ Project specifics and high level approach:
 - demo will use a time series generator
 
 ## data description
-- 282 months of random numbers representing head count for a fictional company
+- 282 months of simulated numbers representing head count for a fictional company
 - start month is January 2000 and the ending month is June 2023
 - mean head count = 773.7
 - median head count = 774.5
