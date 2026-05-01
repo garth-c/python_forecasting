@@ -262,7 +262,7 @@ $$h_t = [\overrightarrow{h_t} \, \Vert \, \overleftarrow{h_t}]$$
 This enables the model to resolve patterns in workforce shifts that may be influenced by cyclic or seasonal trends occurring later in the fiscal year.
 The number of neurons that I set up in my model is the input layer and my final dense layer is my output which represents the forecast. 
 
-The next few steps are to compile the model and then double check the model configuration  with the summary command. The last few steps are to configure an early stopping criteria based on validation loss and then to set up the maximum number of model iterations with an epoch variable. Then the final step to fit the data to the model. This is accomplished using the time series generators set up above. 
+The next few steps are to compile the model and then double check the model configuration  with the summary command. The last few steps are to configure an early stopping criteria based on validation loss and then to set up the maximum number of model iterations with an epoch variable. Then the final step is to fit the data to the model. This is accomplished using the time series generators set up above. 
 
 Once the fit command is executed, the model will process the source data using all of the parameters set up above. 
 
@@ -322,7 +322,7 @@ model_LTSM_bd.fit(train_generator,
                   use_multiprocessing = False)
 ```
 
-The model summary is shown below. Note that this is a large number of paramters being used and training time will take a while. 
+The model summary is shown below. Note that this is a large number of parameters being used and training time will take a while. 
 
 <img width="314" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/f3ce3465-fe83-43bd-98cc-63618754347e">
 
@@ -418,9 +418,9 @@ The end result of this transformation back into head counts and the comparison t
 
 # backtest the predictions 
 
-Since this was random source data, the pattern value was negligible. So looking at the model output compared the actual values for the same time period is the backtesting. Looking at the random pattern of the actual data (blue line) and comparing it to the model output (red line), it is clear that the model could use more training to better capture the source data pattern. This could be adding more neurons, relaxing the early stopping parameters, using a different accuracy metric, using different otpimizer inputs, more epochs, etc. There are other transformations that could also be applied in addition to adding other predictor inputs which would make this a multivariate model. Either way, there are a lot of levers and knobs that could be used to tune the model and get better results. 
+Since this was simulated source data, the pattern value was negligible. So looking at the model output compared the actual values for the same time period is the backtesting. Looking at the pattern of the actual data (blue line) and comparing it to the model output (red line), it is clear that the model could use more training to better capture the source data pattern. This could be adding more neurons, relaxing the early stopping parameters, using a different accuracy metric, using different otpimizer inputs, more epochs, etc. There are other transformations that could also be applied in addition to adding other predictor inputs which would make this a multivariate model. Either way, there are a lot of levers and knobs that could be used to tune the model and get better results. 
 
-Howoever, overall the model captured the directional features of the random data set with much less pronounced slope changes and less pronounced spiking in the data. Thus, the model was pretty effective at capturing the general theme of the data despite the source data being random. 
+However, overall the model captured the directional features of the random data set with much less pronounced slope changes and less pronounced spiking in the data. Thus, the model was pretty effective at capturing the general theme of the data despite the source data being random. 
 
 ![backtesting](https://github.com/garth-c/python_forecasting/assets/138831938/a8c8181c-f56b-4ee5-ac46-1c558609d898)
 
@@ -444,13 +444,13 @@ model_LTSM_bd.save('model_LTSM_bd.h5')
 ```
 
 ### Model Evaluation Metric
-To evaluate the accuracy of the 24-month backtest, I utilized **Mean Absolute Percentage Error (MAPE)**. In a financial headcount context, MAPE is the preferred metric as it provides a relative measure of forecast error that is easily interpretable by stakeholders:
+To evaluate the accuracy of the 24-month backtest from a computational perspective, I utilized **Mean Absolute Percentage Error (MAPE)** metric. In a financial headcount context, MAPE is the preferred metric as it provides a relative measure of forecast error that is easily interpretable by stakeholders:
 
 $$\text{MAPE} = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{y_t - \hat{y}_t}{y_t} \right|$$
 
 Where $y_t$ is the actual headcount and $\hat{y}_t$ is the forecasted value.
 
-The last things to do are to calculate the mean squared error (MSE) metric to use for comparing against other models and the finally saving the model to reconstitute at a later date if needed. The MSE metric is 399.17 and it is shown below. This would be used as a comparative metric against other models or versions of this model.  
+The last evaluation metric to calculate is the mean squared error (MSE) - use it for comparing against other models. Lastly, saving the model to reconstitute at a later date if needed is required. The MSE metric is 399.17 and it is shown below. This would be used as a comparative metric against other models or versions of this model.  
 
 <img width="269" alt="image" src="https://github.com/garth-c/python_forecasting/assets/138831938/81e9b083-328f-4239-9496-f56b9d340ac1">
 
