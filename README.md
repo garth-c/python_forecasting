@@ -420,7 +420,7 @@ The end result of this transformation back into head counts and the comparison t
 
 Since this was simulated source data, the pattern value was negligible. So looking at the model output compared the actual values for the same time period is the backtesting. Looking at the pattern of the actual data (blue line) and comparing it to the model output (red line), it is clear that the model could use more training to better capture the source data pattern. This could be adding more neurons, relaxing the early stopping parameters, using a different accuracy metric, using different otpimizer inputs, more epochs, etc. There are other transformations that could also be applied in addition to adding other predictor inputs which would make this a multivariate model. Either way, there are a lot of levers and knobs that could be used to tune the model and get better results. 
 
-However, overall the model captured the directional features of the random data set with much less pronounced slope changes and less pronounced spiking in the data. Thus, the model was pretty effective at capturing the general theme of the data despite the source data being random. 
+However, overall the model captured the directional features of the simulated data set with much less pronounced slope changes and less pronounced spiking in the data. Thus, the model was pretty effective at capturing the general theme of the data despite the source data being synthetic. 
 
 ![backtesting](https://github.com/garth-c/python_forecasting/assets/138831938/a8c8181c-f56b-4ee5-ac46-1c558609d898)
 
