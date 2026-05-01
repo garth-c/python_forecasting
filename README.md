@@ -1,10 +1,16 @@
 # Python forecasting demo
 
+-------------------------------------------------------------------------------------------------------
+
 Project objective: 
 In this demo project, I am working in the domain of time series forecasting using a bidirectional modeling approach. Using Python with TensorFlow, I will build an accurate bidirectional headcount forecasting model. The primary focus is on predicting future values in a time series sequence based on historical headcount data. By implementing a bidirectional architecture approach, I will enable the model to capture not only past information but also future context, thus enhancing its predictive capabilities. 
 
+-------------------------------------------------------------------------------------------------------------------
+
 Business objective:
 Develop a robust and accurate top-down headcount forecasting model, enabling data-driven decision-making for strategic workforce planning.
+
+---------------------------------------------------------------------------------------------------------------
 
 Project specifics and high level approach: 
 - create a 24 month headcount forecast
@@ -13,9 +19,12 @@ Project specifics and high level approach:
 - demo the use of a bidirectional LSTM model
 - demo will use a time series generator
 
+-------------------------------------------------------------------------------------------------
+
 ## data description
 - 282 months of simulated numbers representing head count for a fictional company
 - start month is January 2000 and the ending month is June 2023
+- assume fractional headcount consists of part time employees
 - mean head count = 773.7
 - median head count = 774.5
 - mode head count = 1,491
