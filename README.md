@@ -24,7 +24,7 @@ Project specifics and high level approach:
 ## data description
 - 282 months of simulated numbers representing head count for a fictional company
 - start month is January 2000 and the ending month is June 2023
-- assume fractional headcount consists of part time employees
+- assume any decimals will be rounded in the final forecast
 - mean head count = 773.7
 - median head count = 774.5
 - mode head count = 1,491
